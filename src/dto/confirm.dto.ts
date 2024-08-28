@@ -1,4 +1,5 @@
 import { IsDate, IsNotEmpty, IsString } from "class-validator";
+import { IsWaterOrGas } from "../decorators/is-water-or-gas.decorator";
 
 export class PostConfirmDto {
   @IsNotEmpty()
@@ -15,5 +16,6 @@ export class PostConfirmDto {
 
   @IsNotEmpty()
   @IsString()
+  @IsWaterOrGas()
   measure_type: string;
 }
