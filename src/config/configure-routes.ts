@@ -1,7 +1,7 @@
 import { Express } from "express";
-import upload from "./upload.routes";
-import confirm from "./confirm.routes";
-import list from "./list.routes";
+import upload from "../routes/upload.routes";
+import confirm from "../routes/confirm.routes";
+import list from "../routes/list.routes";
 
 const appRoutes = (app: Express) => {
   app.use("/upload", upload);
