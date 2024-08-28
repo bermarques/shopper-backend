@@ -13,9 +13,9 @@ export const validator = (dtoClass: any) => {
         Object.values(error.constraints || {}).join(", ")
       );
       return res.status(400).json({
-        statusCode: 400,
-        message: messages.join(", "),
-        error: "Bad Request",
+        status_code: 400,
+        error_description: messages.join(", "),
+        error_code: "INVALID_DATA",
       });
     }
 

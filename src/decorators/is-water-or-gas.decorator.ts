@@ -8,11 +8,11 @@ import {
 @ValidatorConstraint({ async: false })
 export class IsWaterOrGasConstraint implements ValidatorConstraintInterface {
   validate(value: string) {
-    return value === "WATER" || value === "GAS";
+    return value === ("WATER" || "GAS").toLowerCase();
   }
 
   defaultMessage() {
-    return "O valor deve ser WATER ou GAS";
+    return 'O valor deve ser "WATER" ou "GAS"';
   }
 }
 
