@@ -1,13 +1,14 @@
-import { Sequelize } from "sequelize";
+import { PrismaClient } from "@prisma/client";
 
-const { DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT } = process.env;
+const prisma = new PrismaClient();
 
-const sequelize = new Sequelize(
-  `mysql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`
-);
+async function seed() {}
 
-try {
-  sequelize.sync();
-} catch (error) {
-  console.log(error);
-}
+seed()
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });

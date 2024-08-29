@@ -1,7 +1,10 @@
+import { ListController } from "../controllers/list.controller";
 import express from "express";
 
 const router = express.Router();
 
-router.get("/:customer_code/list", (req, res) => res.send("test"));
+const listController = new ListController();
+
+router.get("/:customer_code/list", listController.getList);
 
 export default router;
