@@ -18,23 +18,24 @@ export class ListService {
         String(measure_type).toUpperCase() !== ("WATER" || "GAS")
       ) {
         throw apiResponse({
-          code: 400,
+          status: 400,
           error_description: "Tipo de medição não permitida",
+          error_code: "INVALID_TYPE",
         });
       }
       if (_.isEmpty(measures))
         throw apiResponse({
-          code: 404,
+          status: 404,
           error_description: "Nenhuma leitura encontrada",
+          error_code: "MEASURES_NOT_FOUND",
         });
-      return Promise.resolve(apiResponse({ code: 200, data: measures }));
+      return apiResponse({ status: 200, data: measures });
     } catch (error: any) {
-      return Promise.reject(
-        apiResponse({
-          code: error?.error_code || 500,
-          error_description: error.error_description,
-        })
-      );
+      return apiResponse({
+        status: error?.status || 500,
+        error_description: error.data.error_description,
+        error_code: error.data.error_code || "INTERNAL_SERVER_ERROR",
+      });
     }
   }
 }

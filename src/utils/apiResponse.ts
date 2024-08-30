@@ -1,18 +1,28 @@
 export interface APIResponse {
-  code: number;
+  status: number;
   error_description?: string;
+  error_code?: string;
   data?: any;
 }
 
-export const apiResponse = ({ code, error_description, data }: APIResponse) => {
+export const apiResponse = ({
+  status,
+  error_description,
+  error_code,
+  data,
+}: APIResponse) => {
   if (!data) {
     return {
-      error_code: code,
-      error_description: error_description,
+      status: status,
+      data: {
+        error_code: error_code,
+        error_description: error_description,
+      },
     };
   } else {
     return {
-      ...data,
+      status,
+      data,
     };
   }
 };

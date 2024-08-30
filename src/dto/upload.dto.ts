@@ -1,4 +1,10 @@
-import { IsBase64, IsDate, IsNotEmpty, IsString } from "class-validator";
+import {
+  IsBase64,
+  IsDate,
+  IsDateString,
+  IsNotEmpty,
+  IsString,
+} from "class-validator";
 import { IsWaterOrGas } from "../decorators/is-water-or-gas.decorator";
 
 export class PostUploadDto {
@@ -11,7 +17,7 @@ export class PostUploadDto {
   customer_code: string;
 
   @IsNotEmpty({ message: "Data da medição não pode ser vazio" })
-  @IsDate({ message: "Formato inválido de data" })
+  @IsDateString({ strict: true }, { message: "Formato inválido de data" })
   measure_datetime: Date;
 
   @IsNotEmpty({ message: "Tipo de medição não pode ser vazio" })
