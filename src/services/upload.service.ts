@@ -64,6 +64,10 @@ export class UploadService {
           measure_type: measure_type.toUpperCase(),
           measure_value: measureValue.data,
         },
+        select: {
+          measure_value: true,
+          measure_uuid: true,
+        },
       });
 
       return apiResponse({ status: 200, data: result });

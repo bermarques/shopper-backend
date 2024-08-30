@@ -11,6 +11,12 @@ export class ListService {
 
       const measures = await prisma.measurement.findMany({
         where: { customer_code: customer_code },
+        select: {
+          measure_uuid: true,
+          measure_datetime: true,
+          measure_type: true,
+          has_confirmed: true,
+        },
       });
 
       if (
@@ -29,7 +35,10 @@ export class ListService {
           error_description: "Nenhuma leitura encontrada",
           error_code: "MEASURES_NOT_FOUND",
         });
-      return apiResponse({ status: 200, data: measures });
+      return apiResponse({
+        status: 200,
+        data: { customer_code: customer_code, measures: measures },
+      });
     } catch (error: any) {
       return apiResponse({
         status: error?.status || 500,
