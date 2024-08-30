@@ -9,7 +9,8 @@ datasource db {
 
 model Measurement {
   measure_uuid        String      @id @default(uuid())
-  measure_value       Int
+  measure_value       Int         
+  has_confirmed       Boolean     @default(false)
   measure_type        String
   customer_code       String
   measure_datetime    DateTime
