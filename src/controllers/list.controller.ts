@@ -15,7 +15,6 @@ export class ListController {
       const listService: APIResponse = await this.listService.getMeasures(req);
       return res.status(listService.status).json(listService.data);
     } catch (error: any) {
-      console.log(error);
       return res.status(error.status).json(error);
     }
   }

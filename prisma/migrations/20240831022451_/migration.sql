@@ -1,7 +1,9 @@
 -- CreateTable
 CREATE TABLE `Measurement` (
     `measure_uuid` VARCHAR(191) NOT NULL,
+    `image_url` VARCHAR(191) NOT NULL,
     `measure_value` INTEGER NOT NULL,
+    `has_confirmed` BOOLEAN NOT NULL DEFAULT false,
     `measure_type` VARCHAR(191) NOT NULL,
     `customer_code` VARCHAR(191) NOT NULL,
     `measure_datetime` DATETIME(3) NOT NULL,

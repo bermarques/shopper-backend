@@ -41,7 +41,6 @@ export class ListService {
         data: { customer_code: customer_code, measures: measures },
       });
     } catch (error: any) {
-      console.log(error);
       return apiResponse({
         status: error?.status || 500,
         error_description: error?.data?.error_description || error,
