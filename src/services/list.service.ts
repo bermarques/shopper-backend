@@ -41,9 +41,10 @@ export class ListService {
         data: { customer_code: customer_code, measures: measures },
       });
     } catch (error: any) {
+      console.log(error);
       return apiResponse({
         status: error?.status || 500,
-        error_description: error.data.error_description,
+        error_description: error?.data?.error_description || error,
         error_code: error.data.error_code || "INTERNAL_SERVER_ERROR",
       });
     }
