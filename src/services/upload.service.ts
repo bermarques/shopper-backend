@@ -25,10 +25,16 @@ export class UploadService {
       };
       const result = await model.generateContent([prompt, image]);
       const measureValue = Number(result.response.text());
+      if (Number.isNaN(measureValue)) {
+        return apiResponse({
+          status: 400,
+          error_code: "INVALID_DATA",
+          error_description: "Não há um medidor na imagem fornecida.",
+        });
+      }
 
       return apiResponse({ status: 200, data: measureValue });
     } catch (error: any) {
-      console.log(error);
       return apiResponse({
         status: error?.status || 500,
         error_description: error.data.error_description,
