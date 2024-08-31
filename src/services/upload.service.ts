@@ -4,6 +4,7 @@ import prisma from "./prisma";
 import { Request } from "express";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { endOfMonth, startOfMonth } from "../utils/dates";
+import getImageFormatFromBase64 from "../utils/getFormatFromBase64";
 
 export class UploadService {
   async uploadImage(req: Request) {
@@ -14,10 +15,12 @@ export class UploadService {
       const prompt =
         "Observe a imagem fornecida e identifique o valor atual do medidor. Extraia o valor numérico exato exibido no visor do medidor e me retorne somente os números.";
 
+      const format = getImageFormatFromBase64(req.body.image);
+
       const image = {
         inlineData: {
           data: req.body.image,
-          mimeType: "image/png",
+          mimeType: `image/${format}`,
         },
       };
       const result = await model.generateContent([prompt, image]);
@@ -25,6 +28,7 @@ export class UploadService {
 
       return apiResponse({ status: 200, data: measureValue });
     } catch (error: any) {
+      console.log(error);
       return apiResponse({
         status: error?.status || 500,
         error_description: error.data.error_description,

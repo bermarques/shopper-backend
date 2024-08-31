@@ -11,7 +11,7 @@ export class UploadController {
 
   public async upload(req: Request, res: Response) {
     try {
-      const result = await this.uploadService.saveMeasurement(req);
+      const result = await this.uploadService.uploadImage(req);
       return res.status(result.status).json(result.data);
     } catch (error: any) {
       return res.status(error.status).json(error.data);
