@@ -8,7 +8,8 @@ import {
 @ValidatorConstraint({ async: false })
 export class IsWaterOrGasConstraint implements ValidatorConstraintInterface {
   validate(value: any) {
-    return value.toUpperCase() === ("WATER" || "GAS");
+    console.log(value);
+    return value.toUpperCase() === "WATER" || value.toUpperCase() === "GAS";
   }
 
   defaultMessage() {

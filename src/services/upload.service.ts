@@ -58,7 +58,7 @@ export class UploadService {
     } catch (error: any) {
       return apiResponse({
         status: error?.status || 500,
-        error_description: error.data.error_description,
+        error_description: error?.data?.error_description || error,
       });
     }
   }
@@ -71,6 +71,7 @@ export class UploadService {
       const existingMeasure = await prisma.measurement.findFirst({
         where: {
           customer_code: customer_code,
+          measure_type: measure_type,
           measure_datetime: {
             gte: startOfMonth(measureDate),
             lte: endOfMonth(measureDate),
@@ -107,7 +108,7 @@ export class UploadService {
     } catch (error: any) {
       return apiResponse({
         status: error?.status || 500,
-        error_description: error.data.error_description || "",
+        error_description: error?.data?.error_description || error,
         error_code: error.data.error_code || "INTERNAL_SERVER_ERROR",
       });
     }
