@@ -16,6 +16,7 @@ export class ListService {
           measure_datetime: true,
           measure_type: true,
           has_confirmed: true,
+          image_url: true,
         },
       });
 

@@ -5,11 +5,13 @@ import { Request } from "express";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { endOfMonth, startOfMonth } from "../utils/dates";
 import getImageFormatFromBase64 from "../utils/getFormatFromBase64";
+import path from "path";
+import fs from "fs";
 
 export class UploadService {
   async uploadImage(req: Request) {
     try {
-      const { GEMINI_API_KEY } = process.env;
+      const { GEMINI_API_KEY, PORT } = process.env;
       const genAI = new GoogleGenerativeAI(GEMINI_API_KEY!);
       const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
       const prompt =
@@ -33,7 +35,26 @@ export class UploadService {
         });
       }
 
-      return apiResponse({ status: 200, data: measureValue });
+      const imageData = req.body.image.replace(/^data:image\/\w+;base64,/, "");
+      const buffer = Buffer.from(imageData, "base64");
+      const imagesDir = path.join(__dirname, "../../public", "images");
+      const imageName = `image-${Date.now()}.${format}`;
+      const imagePath = path.join(imagesDir, imageName);
+
+      if (!fs.existsSync(imagesDir)) {
+        fs.mkdirSync(imagesDir, { recursive: true });
+      }
+
+      fs.writeFileSync(imagePath, buffer);
+
+      const imageUrl = `http://localhost:${PORT}/images/${path.basename(
+        imagePath
+      )}`;
+
+      return apiResponse({
+        status: 200,
+        data: { value: measureValue, image_url: imageUrl },
+      });
     } catch (error: any) {
       return apiResponse({
         status: error?.status || 500,
@@ -72,11 +93,13 @@ export class UploadService {
           customer_code,
           measure_datetime,
           measure_type: measure_type.toUpperCase(),
-          measure_value: measureValue.data,
+          measure_value: measureValue.data.value,
+          image_url: measureValue.data.image_url,
         },
         select: {
           measure_value: true,
           measure_uuid: true,
+          image_url: true,
         },
       });
 
@@ -84,7 +107,7 @@ export class UploadService {
     } catch (error: any) {
       return apiResponse({
         status: error?.status || 500,
-        error_description: error.data.error_description,
+        error_description: error.data.error_description || "",
         error_code: error.data.error_code || "INTERNAL_SERVER_ERROR",
       });
     }

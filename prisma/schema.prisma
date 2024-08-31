@@ -9,6 +9,7 @@ datasource db {
 
 model Measurement {
   measure_uuid        String      @id @default(uuid())
+  image_url           String
   measure_value       Int         
   has_confirmed       Boolean     @default(false)
   measure_type        String
